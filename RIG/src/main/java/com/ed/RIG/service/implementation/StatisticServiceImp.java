@@ -2,9 +2,8 @@ package com.ed.RIG.service.implementation;
 
 import com.ed.RIG.model.Customer;
 import com.ed.RIG.pojo.MonthlyValues;
-import com.ed.RIG.repository.BookRepository;
 import com.ed.RIG.repository.CustomerRepository;
-import com.ed.RIG.repository.OrderRepository;
+import com.ed.RIG.repository.StatisticRepository;
 import com.ed.RIG.service.StatisticService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,10 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 public class StatisticServiceImp implements StatisticService {
     private final CustomerRepository customerRepository;
+    private final StatisticRepository statisticRepository;
 
     @Override
-    public List<Customer> totalValuesByMonth() {
-
-        return customerRepository.findAllByOrderAndBook();
+    public List<MonthlyValues> getAllByTotalValuesByMonth() {
+        List<MonthlyValues> customers = statisticRepository.findAllByOrderAndBook();
+        return customers;
     }
 }

@@ -1,16 +1,21 @@
 package com.ed.RIG.controller;
 
+import com.ed.RIG.config.JwtService;
 import com.ed.RIG.model.Customer;
 import com.ed.RIG.model.OnlineOrder;
+import com.ed.RIG.pojo.CustomerLoginRequest;
 import com.ed.RIG.service.CustomerService;
 import com.ed.RIG.validation.CustomerValidation;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /*
@@ -29,11 +34,32 @@ import java.util.List;
 @EnableAutoConfiguration
 @CrossOrigin
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomerController {
 
-    private final CustomerService customerService;
-    private final CustomerValidation customerValidation;
+    @Autowired
+   CustomerService customerService;
 
+    @Autowired
+    CustomerValidation customerValidation;
+
+    @Autowired
+    private JwtService jwtService;
+
+    /*•	Registering New Customer */
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody CustomerLoginRequest customerLoginRequest) throws IOException {
+        Customer customer = customerService.findByUsername(customerLoginRequest.getUsername());
+
+        if (customer == null || !customer.getPassword().equals(customerLoginRequest.getPassword())) {
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Username or password is incorrect.");
+        }
+
+        String token = jwtService.generateToken(customer.getUserName());
+        return ResponseEntity.ok("Barrier " + token);
+    }
 
     /*Placing a new order*/
     //I create a customer as basic. There is a basic existsCustomer validation for creating with same id.

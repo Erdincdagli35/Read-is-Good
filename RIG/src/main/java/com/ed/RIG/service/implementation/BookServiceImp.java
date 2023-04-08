@@ -38,8 +38,9 @@ public class BookServiceImp implements BookService {
     @Override
     public Page<Book> getAll(Integer pageNo, Integer pageSize) {
         log.info("Book : getAll(pageNo, pageSize)");
-        Pageable pageable = PageRequest.of(pageNo -1 , pageSize);
-        return bookRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(pageNo -1, pageSize);
+        Page<Book> books = bookRepository.findAll(pageable);
+        return books;
     }
 
     @Override

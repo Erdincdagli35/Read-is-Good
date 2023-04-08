@@ -1,8 +1,10 @@
 package com.ed.RIG.controller;
 
 import com.ed.RIG.model.Customer;
+import com.ed.RIG.service.CustomerService;
 import com.ed.RIG.service.StatisticService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,12 +27,9 @@ import java.util.List;
 @CrossOrigin
 @AllArgsConstructor
 public class StatisticController {
-
     private final StatisticService statisticService;
-
-
     @GetMapping("/totalValuesByMonth")
-    public ResponseEntity totalValuesByMonth() {
-        return ResponseEntity.ok(statisticService.totalValuesByMonth());
+    public ResponseEntity getAllByTotalValuesByMonth() {
+        return ResponseEntity.ok(statisticService.getAllByTotalValuesByMonth());
     }
 }

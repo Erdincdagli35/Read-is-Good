@@ -1,7 +1,6 @@
 package com.ed.RIG.service.implementation;
 
 import com.ed.RIG.model.Customer;
-import com.ed.RIG.pojo.LoginRequest;
 import com.ed.RIG.model.OnlineOrder;
 import com.ed.RIG.repository.CustomerRepository;
 import com.ed.RIG.repository.OrderRepository;
@@ -37,13 +36,18 @@ public class CustomerServiceImp implements CustomerService {
         return customerId;
     }
 
+    @Override
+    public Customer findByUsername(String username) {
+        Customer customer = customerRepository.findByUserName(username);
+        return customer;
+    }
+
     private void addOrderFromCustomer(Customer customer, List<OnlineOrder> orders) {
         for (OnlineOrder order : orders){
             order.setCustomer(customer);
             orderRepository.save(order);
         }
     }
-
 
     @Override
     public Page<Customer> getAll(Integer pageNo, Integer pageSize) {
